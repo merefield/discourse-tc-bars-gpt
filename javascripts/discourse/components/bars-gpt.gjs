@@ -12,25 +12,29 @@ export default class BarsGPT extends Component {
   @action
   async register() {
     await loadScript(`https://securepubads.g.doubleclick.net/tag/js/gpt.js`);
+    googletag.cmd.push(() => {
+      // Define an ad slot for div with id div_id.
+      this.slot = googletag
+          .defineSlot(this.args.params.ad_unit_path, [this.args.params.width, this.args.params.height], this.args.params.div_id);
 
-    // Define an ad slot for div with id div_id.
-    this.slot = googletag
-        .defineSlot(this.args.params.ad_unit_path, [this.args.params.width, this.args.params.height], this.args.params.div_id);
-
-    // Request and render an ad for the slot for given div_id.
-    googletag.display(this.args.params.div_id);
+      // Request and render an ad for the slot for given div_id.
+      googletag.display(this.args.params.div_id);
+    });
   }
 
   @action
-  unregister() {
+  async unregister() {
+    await loadScript(`https://securepubads.g.doubleclick.net/tag/js/gpt.js`);
     // Remove the slot from the page.
-    googletag.destroySlots([this.slot]);
+    googletag.cmd.push(() => {
+      googletag.destroySlots([this.slot]);
+    });
   }
 
   <template>
     <div id={{htmlSafe this.args.params.div_id}} style="width: {{htmlSafe this.args.params.width}}px; height: {{htmlSafe this.args.params.height}}px"
-      {{didInsert this.register}}>
-      {{willDestroy this.unregister}}
+      {{didInsert this.register}}
+      {{willDestroy this.unregister}}>
     </div>
   </template>
 }
