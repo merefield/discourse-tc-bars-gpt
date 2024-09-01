@@ -18,6 +18,7 @@ export default class BarsGPT extends Component {
       this.slot = googletag
           .defineSlot(this.args.params.ad_unit_path, [this.args.params.width, this.args.params.height], this.args.params.div_id)
           .addService(googletag.pubads());
+      googletag.pubads().enableSingleRequest();
       // Enble services.
       googletag.enableServices();
       googletag.display(this.args.params.div_id);
