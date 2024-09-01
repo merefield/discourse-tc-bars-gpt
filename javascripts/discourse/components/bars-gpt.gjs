@@ -16,14 +16,10 @@ export default class BarsGPT extends Component {
     googletag.cmd.push(() => {
       // Define an ad slot for div with id div_id.
       this.slot = googletag
-          .defineSlot(this.args.params.ad_unit_path, [this.args.params.width, this.args.params.height], this.args.params.div_id);
-
+          .defineSlot(this.args.params.ad_unit_path, [this.args.params.width, this.args.params.height], this.args.params.div_id)
+          .addService(googletag.pubads());
       // Enble services.
       googletag.enableServices();
-    });
-
-    googletag.cmd.push(() => {
-      // Request and render an ad for the slot for given div_id.
       googletag.display(this.args.params.div_id);
     });
   }
